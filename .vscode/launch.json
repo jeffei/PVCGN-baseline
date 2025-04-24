@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ggnn_train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config",
+                "data/model/ggnn_hz_multigraph_rnn256_global_local_fusion_input.yaml"
+            ]
+        }
+    ]
+}
