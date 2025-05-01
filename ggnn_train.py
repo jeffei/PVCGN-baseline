@@ -14,7 +14,8 @@ from torch.optim.lr_scheduler import MultiStepLR
 from torch.nn.init import xavier_uniform_
 from baselines.DDGCRN import DDGCRN
 from baselines.PM_DMnet import PM_DMNet
-from ggnn_utils import append_time_info, print_model_parameters
+from baselines.STDGRL import AGCRN
+from ggnn_utils import append_time_info, plot_trend, print_model_parameters
 from lib import utils
 from lib import metrics
 from lib.utils import collate_wrapper
@@ -263,6 +264,8 @@ def main(args):
                                                      1,
                                                      2,
                                                      3))
+        # plot_trend(dataset)
+
     else:
         dataset = utils.load_dataset(**cfg['data'])
     for k, v in dataset.items():
@@ -279,7 +282,8 @@ def main(args):
     # model = Net(cfg).to(device)
     from types import SimpleNamespace
     # model = PM_DMNet.PM_DMNet(SimpleNamespace(**cfg["model"])).to(device)
-    model = DDGCRN.DDGCRN(SimpleNamespace(**cfg["model"])).to(device)
+    # model = DDGCRN.DDGCRN(SimpleNamespace(**cfg["model"])).to(device)
+    model = AGCRN.AGCRN(SimpleNamespace(**cfg["model"])).to(device)  # STDGRL 方法
     for p in model.parameters():
         if p.dim() > 1:
             nn.init.xavier_uniform_(p)
@@ -312,6 +316,8 @@ def main(args):
         model.train()
         for _, (x, y, xtime, ytime) in enumerate(train_iterator):
             x, y = append_time_info(x, y, xtime, ytime, device=device)
+
+            # plot_trend(x, y, xtime, ytime, scaler_torch)
 
             optimizer.zero_grad()
             label = y[:, :horizon, :, :output_dim]

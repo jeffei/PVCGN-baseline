@@ -88,3 +88,70 @@ def print_model_parameters(model, only_num = True):
     total_num = sum([param.nelement() for param in model.parameters()])
     print('Total params num: {}'.format(total_num))
     print('*****************Finish Parameter****************')
+
+
+
+def plot_trend(data):
+    import matplotlib.pyplot as plt
+    scaler = data["scaler"]
+
+    # x = scaler.inverse_transform(x)
+    # y = scaler.inverse_transform(y)
+
+    # def plot_sample(split):
+    #     x = data[f"x_{split}"]
+    #     y = data[f"y_{split}"]
+    #     xtime = parse_datetime(data[f"xtime_{split}"])
+    #     ytime = parse_datetime(data[f"ytime_{split}"])
+    #     Total, T, N, D = x.shape
+    #     i = 0
+    #     for n in range(N):
+    #         plt.plot(xtime[i] + ytime[i], x[i, :, n, 0] + y[i, :, n, 0])
+
+
+    def plot_all(split):
+        x = data[f"x_{split}"]
+        y = data[f"y_{split}"]
+        xtime = parse_datetime(data[f"xtime_{split}"])
+        ytime = parse_datetime(data[f"ytime_{split}"])
+        Total, T, N, D = x.shape
+        # 画x就够了
+        xtime = xtime.reshape(-1)
+        unique_xtime, indices = np.unique(xtime, return_index=True)
+        x = x.reshape(-1, N, D)
+        x = x[indices, ...]
+
+        fig, (ax, ax2) = plt.subplots(2, 1, figsize=(24, 12))
+
+        plot_N = 3
+        colors = plt.cm.tab20(np.linspace(0, 1, plot_N)) 
+
+        for n in range(plot_N):
+            ax.plot(unique_xtime, x[:, n, 0], color=colors[n])
+        ax.tick_params(axis='x', labelrotation=45, labelsize=9)
+
+        ax.set_xticks(range(0, len(unique_xtime), 16))
+        ax.set_xticklabels(unique_xtime[::16])
+
+        # 维度2的图
+        for n in range(plot_N):
+            ax2.plot(unique_xtime, x[:, n, 1], color=colors[n])
+        ax2.tick_params(axis='x', labelrotation=45, labelsize=9)
+
+        ax2.set_xticks(range(0, len(unique_xtime), 16))
+        ax2.set_xticklabels(unique_xtime[::16])
+
+        plt.show()
+
+
+    plot_all(split='test')
+    print("hello")
+        
+
+
+
+def parse_datetime(xtime):
+    xtime = xtime.astype("datetime64[ns]").astype(int) / 1e9
+    xtime_datetime = np.vectorize(
+        lambda x: datetime.datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M'))(xtime)
+    return xtime_datetime
