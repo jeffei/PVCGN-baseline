@@ -1,0 +1,93 @@
+---
+base_dir: data/checkpoint/hz_mrgcn_global_local_fusion_input
+log_level: INFO
+data:
+  batch_size: 64
+  dataset_dir: data/hangzhou
+  test_batch_size: 8
+  val_batch_size: 8
+  # graph_pkl_filename: [ data/hangzhou/graph_hz_conn.pkl, data/hangzhou/graph_hz_sml.pkl, data/hangzhou/graph_hz_cor.pkl]
+  graph_pkl_filename: [ data/hangzhou/graph_hz_conn.pkl]
+  name: hz
+
+model:
+  # cl_decay_steps: 200
+  # filter_type: chebnet
+  # horizon: 4
+  # input_dim: 2
+  # l1_decay: 0
+  # num_nodes: 80
+  # num_rnn_layers: 2
+  # output_dim: 2
+  # output_type: fc
+  # rnn_units: 256
+  # seq_len: 4
+  # use_curriculum_learning: true
+  # num_branches: 1
+  # fusion: concat
+  # dropout_type: zoneout
+  # dropout_prop: 0.05
+  # use_input: true
+  # num_relations: 3
+  # num_bases: 3
+  # graph_type: cso
+  # K: 1
+  # norm: True
+  # global_fusion: true
+
+  # DDGCRN parameters [hz]:
+  # num_nodes: 80
+  # input_dim: 2
+  # output_dim: 2
+  # horizon: 4
+  # embed_dim: 10
+  # rnn_units: 64
+  # num_layers: 1
+  # cheb_order: 2
+  # use_day: True
+  # use_week: False
+  # default_graph: True
+
+  # PM_DMNET 参数
+  # num_nodes: 80
+  # input_dim: 2
+  # output_dim: 2
+  # horizon: 4
+  # embed_dim: 10
+  # time_dim: 20
+  # rnn_units: 64
+  # num_layers: 1
+  # cheb_k: 2
+  # use_day: True
+  # use_week: False
+  # default_graph: True
+  # type: "P"
+
+  # AGCRN parameters [hz]
+  num_nodes: 80
+  input_dim: 2
+  output_dim: 2
+  horizon: 4
+  rnn_units: 64
+  embed_dim: 10
+  num_layers: 2
+  cheb_k: 2
+  default_graph: True
+
+
+
+train:
+  base_lr: 0.003
+  epoch: 0
+  epochs: 300
+  epsilon: 1.0e-4
+  global_step: 0
+  lr_decay_ratio: 0.1
+  max_grad_norm: 5
+  max_to_keep: 100
+  min_learning_rate: 2.0e-06
+  optimizer: adam
+  patience: 100
+  steps: [100, 150, 200]
+  test_every_n_epochs: 1
+  save_every_n_epochs: 5

@@ -66,7 +66,7 @@ class AGCRN(nn.Module):
 
         # Fusion module, 每个节点对应一个独立权重
         self.ws = nn.Parameter(torch.randn(self.num_node, self.hidden_dim), requires_grad=True)
-        self.wt = nn.Parameter(torch.rand(self.num_node, self.hidden_dim), requires_grad=True)
+        self.wt = nn.Parameter(torch.randn(self.num_node, self.hidden_dim), requires_grad=True)
 
 
         #predictor
